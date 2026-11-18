@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uji Coba Soal Literasi Membaca Kelas 2 - UPT SD Negeri Plumpang 3</title>
+    <!-- Tailwind CSS untuk tata letak responsif dan estetik -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Pengaturan Font Khusus Sesuai Spesifikasi */
+        .font-judul {
+            font-family: 'Arial Nova Cond', 'Arial Narrow', Arial, sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        /* Aturan ketat tipografi konten soal: Arial 11pt */
+        .soal-teks-arial11 {
+            font-family: Arial, Helvetica, sans-serif !important;
+            font-size: 11pt !important;
+            line-height: 1.65;
+            color: #1e293b;
+        }
+
+        /* Aturan sumber stimulus: Arial 8pt miring */
+        .sumber-arial8 {
+            font-family: Arial, Helvetica, sans-serif !important;
+            font-size: 8pt !important;
+            font-style: italic;
+            color: #475569;
+            margin-top: 8px;
+        }
+
+        .sumber-arial8 a {
+            color: #0066cc;
+            text-decoration: underline;
+        }
+
+        /* Latar belakang halus ramah anak SD */
+        body {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 50%, #fefce8 100%);
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Styling khusus lingkaran opsi A, B, C, D */
+        .opsi-item {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .opsi-item:hover {
+            background-color: #f1f5f9;
+            border-color: #93c5fd;
+        }
+
+        .opsi-item.terpilih {
+            background-color: #dbeafe;
+            border-color: #2563eb;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.15);
+        }
+
+        .lingkaran-huruf {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            border-radius: 9999px;
+            border: 2px solid #64748b;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            font-size: 11pt;
+            background-color: #ffffff;
+            color: #334155;
+            transition: all 0.2s ease;
+        }
+
+        .opsi-item.terpilih .lingkaran-huruf {
+            background-color: #2563eb;
+            border-color: #1d4ed8;
+            color: #ffffff;
+            transform: scale(1.05);
+        }
+
+        /* Styling Tabel Soal Kategori Benar / Salah */
+        .tabel-kategori {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            font-size: 11pt;
+        }
+
+        .tabel-kategori th,
+        .tabel-kategori td {
+            border: 1.5px solid #cbd5e1;
+            padding: 10px 12px;
+        }
+
+        .tabel-kategori th {
+            background-color: #e2e8f0;
+            color: #0f172a;
+            font-weight: bold;
+        }
+
+        .sel-centang {
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.15s ease;
+            user-select: none;
+            width: 90px;
+        }
+
+        .sel-centang:hover {
+            background-color: #f1f5f9;
+        }
+
+        .sel-centang.aktif-benar {
+            background-color: #dcfce7;
+        }
+
+        .sel-centang.aktif-salah {
+            background-color: #fee2e2;
+        }
+
+        .kotak-centang {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border: 2px solid #94a3b8;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .aktif-benar .kotak-centang {
+            border-color: #16a34a;
+            background-color: #16a34a;
+            color: #ffffff;
+        }
+
+        .aktif-salah .kotak-centang {
+            border-color: #dc2626;
+            background-color: #dc2626;
+            color: #ffffff;
+        }
+
+        /* Animasi lembut */
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-popup {
+            animation: fadeInScale 0.25s ease-out forwards;
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased flex flex-col justify-between min-h-screen">
+
+    <!-- =====================================================================
+         HALAMAN 1: HALAMAN AWAL / LOGIN IDENTITAS PESERTA
+    ====================================================================== -->
+    <main id="halaman-awal" class="flex-grow flex items-center justify-center p-4 sm:p-6 relative">
+        <!-- Tombol Pengaturan Guru (Untuk Ganti Logo / Edit Soal jika diperlukan) -->
+        <button onclick="bukaModalPengaturan()" title="Pengaturan Guru: Ganti Logo atau Edit Soal"
+            class="fixed top-4 right-4 bg-white/90 hover:bg-white text-slate-600 hover:text-blue-700 border border-slate-200 shadow-sm rounded-full px-3 py-1.5 text-xs font-medium flex items-center gap-1.5 transition z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>Menu Guru / Logo</span>
+        </button>
+
+        <div class="w-full max-w-xl bg-white rounded-3xl shadow-xl border border-blue-100 overflow-hidden">
+            <!-- Dekorasi Pita Atas -->
+            <div class="h-3 bg-gradient-to-r from-blue-600 via-sky-400 to-emerald-500"></div>
+
+            <div class="p-6 sm:p-10">
+                <!-- Area Logo Sekolah (Bisa diklik untuk mengganti logo langsung) -->
+                <div class="flex flex-col items-center justify-center mb-5">
+                    <div onclick="document.getElementById('input-logo-file').click()"
+                         title="Klik untuk memasang logo sekolah"
+                         class="group relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-b from-blue-50 to-slate-50 border-2 border-dashed border-blue-300 hover:border-blue-500 flex items-center justify-center p-2 cursor-pointer transition shadow-sm overflow-hidden">
+                        
+                        <!-- Default SVG Emblem Sekolah (Tampil sebelum file logo diunggah) -->
+                        <div id="logo-placeholder-svg" class="flex flex-col items-center text-center">
+                            <svg class="w-14 h-14 text-blue-600" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M32 6L54 16V30C54 44.5 44.6 56.8 32 60C19.4 56.8 10 44.5 10 30V16L32 6Z" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="3"/>
+                                <path d="M20 26L32 20L44 26L32 32L20 26Z" fill="#2563EB"/>
+                                <path d="M24 30V38C24 40.5 27.5 43 32 43C36.5 43 40 40.5 40 38V30" stroke="#1E40AF" stroke-width="2.5" stroke-linecap="round"/>
+                                <circle cx="32" cy="14" r="2.5" fill="#F59E0B"/>
+                            </svg>
+                            <span class="text-[10px] font-semibold text-blue-700 mt-1 leading-tight">Logo Sekolah</span>
+                        </div>
+
+                        <!-- Gambar Logo Hasil Upload -->
+                        <img id="logo-sekolah-img" src="" alt="Logo UPT SD Negeri Plumpang 3" class="hidden w-full h-full object-contain">
+
+                        <!-- Overlay Hover Unggah -->
+                        <div class="absolute inset-0 bg-blue-900/65 text-white opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-[11px] font-semibold p-1 text-center transition">
+                            <span>Ganti Logo</span>
+                        </div>
+                    </div>
+                    <input type="file" id="input-logo-file" accept="image/*" class="hidden" onchange="prosesUnggahLogo(event)">
+                </div>
+
+                <!-- Judul Utama Rata Tengah dengan Font Arial Nova Cond -->
+                <header class="text-center mb-7 space-y-1">
+                    <h1 class="font-judul text-xl sm:text-2xl md:text-[26px] text-slate-900 leading-snug uppercase">
+                        UJI COBA SOAL LITERASI MEMBACA KELAS 2<br>
+                        UPT SD NEGERI PLUMPANG 3<br>
+                        <span class="text-blue-700">TAHUN 2027</span>
+                    </h1>
+                </header>
+
+                <!-- Form Input Identitas Peserta -->
+                <form id="form-login" onsubmit="validasiLogin(event)" class="space-y-4">
+                    <div>
+                        <label for="input-nama" class="block text-sm font-bold text-slate-700 mb-1">Nama Lengkap Peserta</label>
+                        <input type="text" id="input-nama" required placeholder="Ketik nama lengkapmu di sini..."
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition text-base">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="input-kelas" class="block text-sm font-bold text-slate-700 mb-1">Kelas</label>
+                            <input type="text" id="input-kelas" required placeholder="Contoh: 2" value="2"
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition text-base">
+                        </div>
+
+                        <div>
+                            <label for="input-tanggal" class="block text-sm font-bold text-slate-700 mb-1">Tanggal</label>
+                            <input type="date" id="input-tanggal" required
+                                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition text-base">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="input-token" class="block text-sm font-bold text-slate-700 mb-1">Token Ujian</label>
+                        <input type="text" id="input-token" required autocomplete="off" placeholder="Masukkan token dari Ibu Guru..."
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition text-base font-semibold tracking-wider">
+                    </div>
+
+                    <!-- Kotak Peringatan Jika Token Salah -->
+                    <div id="pesan-error-token" class="hidden rounded-xl bg-red-50 border border-red-300 p-3.5 text-red-700 text-sm font-semibold flex items-center gap-2.5 animate-popup">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                        <span>Maaf, token yang Anda masukkan salah. Silakan ulangi Kembali.</span>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit"
+                            class="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-bold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transition text-base flex items-center justify-center gap-2">
+                            <span>Masuk</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Kredit Pembuat di Pojok Kanan Bawah -->
+        <div class="fixed bottom-3 right-4 bg-white/85 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-slate-200 shadow-sm text-xs sm:text-sm font-semibold text-slate-700">
+            Dibuat oleh: Ratna Lestari
+        </div>
+    </main>
+
+    <!-- =====================================================================
+         POP-UP IDENTITAS & PETUNJUK PENGERJAAN SOAL
+    ====================================================================== -->
+    <div id="modal-petunjuk" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-blue-100 overflow-hidden animate-popup">
+            <div class="bg-blue-600 px-6 py-4 text-white">
+                <h2 class="text-lg sm:text-xl font-bold">Konfirmasi Data & Petunjuk Pengerjaan</h2>
+                <p class="text-blue-100 text-xs sm:text-sm">UPT SD Negeri Plumpang 3 - Literasi Membaca Kelas 2</p>
+            </div>
+
+            <div class="p-6 space-y-5">
+                <!-- Ringkasan Identitas yang Diinput -->
+                <div class="bg-blue-50/80 border border-blue-200 rounded-2xl p-4 space-y-2 text-sm">
+                    <div class="font-bold text-blue-900 border-b border-blue-200 pb-1.5 mb-2">Identitas Peserta:</div>
+                    <div class="grid grid-cols-3 gap-1">
+                        <span class="text-slate-600">Nama</span>
+                        <span class="col-span-2 font-bold text-slate-900" id="tampil-popup-nama">: -</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1">
+                        <span class="text-slate-600">Kelas</span>
+                        <span class="col-span-2 font-bold text-slate-900" id="tampil-popup-kelas">: -</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1">
+                        <span class="text-slate-600">Tanggal</span>
+                        <span class="col-span-2 font-bold text-slate-900" id="tampil-popup-tanggal">: -</span>
+                    </div>
+                </div>
+
+                <!-- Petunjuk Pengerjaan Soal -->
+                <div class="space-y-2.5 text-slate-800 text-sm sm:text-base">
+                    <h3 class="font-bold text-slate-900">Petunjuk Pengerjaan Soal:</h3>
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-2.5 leading-relaxed">
+                        <div class="flex items-start gap-2.5">
+                            <span class="font-bold text-amber-800">a)</span>
+                            <p>Soal terdiri dari <strong>20 butir soal</strong> dengan waktu mengerjakan maksimal <strong>30 menit</strong>. Setiap stimulus pada soal yaitu setiap kalimat maksimal 7 kata.</p>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="font-bold text-amber-800">b)</span>
+                            <p>Periksa Kembali jawaban Anda. Pastikan Anda menjawab dengan benar. <strong>Selamat mengerjakan!</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Pojok Kanan Bawah -->
+                <div class="flex justify-end pt-2">
+                    <button onclick="mulaiUjian()"
+                        class="bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-bold py-3 px-6 rounded-xl shadow-md transition text-sm sm:text-base">
+                        Saya Mengerti, Saya Siap Mengerjakan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         HALAMAN 2: TAMPILAN PENGERJAAN SOAL
+    ====================================================================== -->
+    <section id="halaman-ujian" class="hidden flex-grow flex flex-col">
+        <!-- Header Atas Ujian -->
+        <header class="bg-white border-b border-slate-200 shadow-xs sticky top-0 z-30">
+            <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div id="header-logo-mini" class="w-10 h-10 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center overflow-hidden shrink-0">
+                        <span class="font-bold text-blue-700 text-xs">SDN 3</span>
+                    </div>
+                    <div>
+                        <div class="font-judul text-sm sm:text-base text-slate-900 leading-tight">
+                            UJI COBA LITERASI MEMBACA KELAS 2
+                        </div>
+                        <div class="text-xs text-slate-600">
+                            Peserta: <strong id="header-nama-siswa" class="text-slate-900">-</strong> | Kelas: <strong id="header-kelas-siswa">-</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timer Hitung Mundur 30 Menit -->
+                <div class="flex items-center gap-3">
+                    <div id="kotak-timer" class="bg-blue-50 border border-blue-200 text-blue-900 px-4 py-1.5 rounded-xl flex items-center gap-2 font-bold">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="text-xs uppercase text-slate-500 hidden sm:inline">Sisa Waktu:</span>
+                        <span id="tampilan-timer" class="text-base sm:text-lg font-mono tracking-wider">30:00</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Konten Utama Soal + Menu Nomor di Kanan Atas -->
+        <div class="max-w-7xl w-full mx-auto px-4 py-5 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            <!-- Kolom Kiri (8 kolom di layar besar): Area Stimulus & Pertanyaan -->
+            <div class="lg:col-span-8 bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden order-2 lg:order-1">
+                <!-- Bar Nomor Soal Aktif -->
+                <div class="bg-slate-50 border-b border-slate-200 px-5 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-blue-600 text-white font-bold px-3 py-1 rounded-lg text-sm">
+                            Soal No. <span id="nomor-soal-aktif">1</span>
+                        </span>
+                        <span id="badge-tipe-soal" class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-200 text-slate-700">
+                            Pilihan Ganda
+                        </span>
+                    </div>
+                    <span id="status-tersimpan" class="text-xs text-emerald-600 font-semibold flex items-center gap-1">
+                        <span>● Jawaban otomatis tersimpan</span>
+                    </span>
+                </div>
+
+                <!-- Isi Stimulus, Petunjuk, Pokok Soal, dan Opsi (Arial 11pt) -->
+                <div class="p-5 sm:p-7 space-y-5">
+                    <!-- Kotak Stimulus Bacaan -->
+                    <div id="wadah-stimulus" class="bg-amber-50/60 border border-amber-200/80 rounded-2xl p-4 sm:p-5">
+                        <div id="judul-stimulus" class="soal-teks-arial11 font-bold text-slate-900 mb-2"></div>
+                        <div id="isi-stimulus" class="soal-teks-arial11 space-y-1.5 text-slate-800"></div>
+                        <div id="sumber-stimulus" class="sumber-arial8"></div>
+                    </div>
+
+                    <!-- Petunjuk Soal & Pokok Soal -->
+                    <div class="space-y-2">
+                        <div id="petunjuk-soal" class="soal-teks-arial11 italic text-slate-600"></div>
+                        <div id="pokok-soal" class="soal-teks-arial11 font-bold text-slate-900"></div>
+                    </div>
+
+                    <!-- Area Jawaban (Dinamis: Pilihan Ganda A/B/C/D atau Tabel Kategori Benar/Salah) -->
+                    <div id="area-jawaban" class="pt-1"></div>
+                </div>
+
+                <!-- Footer Tombol Bawah Soal: Lewati, Ragu-ragu, dan Selesai (di soal terakhir) -->
+                <div class="bg-slate-50 border-t border-slate-200 px-5 py-4 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button type="button" onclick="lewatiSoal()"
+                            class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2.5 px-5 rounded-xl transition text-sm flex items-center gap-1.5">
+                            <span>Lewati</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                            </svg>
+                        </button>
+
+                        <button type="button" id="btn-ragu" onclick="toggleRaguRagu()"
+                            class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-2.5 px-5 rounded-xl transition text-sm flex items-center gap-1.5 shadow-xs">
+                            <input type="checkbox" id="cek-ragu" class="pointer-events-none accent-slate-900 w-4 h-4">
+                            <span>Ragu-ragu</span>
+                        </button>
+                    </div>
+
+                    <!-- Tombol Selesai (Muncul di Pojok Kanan Bawah pada Soal Terakhir No. 20) -->
+                    <div id="wadah-tombol-selesai" class="hidden">
+                        <button type="button" onclick="konfirmasiSelesai()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-xl shadow-md transition text-sm sm:text-base flex items-center gap-2">
+                            <span>Selesai</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kolom Kanan Atas (4 kolom): Menu Nomor Soal 1 s.d. 20 -->
+            <aside class="lg:col-span-4 bg-white rounded-3xl shadow-md border border-slate-200 p-5 order-1 lg:order-2 lg:sticky lg:top-20">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                    <h3 class="font-bold text-slate-800 text-sm sm:text-base">Daftar Nomor Soal</h3>
+                    <span class="text-xs font-semibold text-slate-500" id="ringkasan-terjawab">0 / 20 Terjawab</span>
+                </div>
+
+                <!-- Grid Tombol Nomor 1 - 20 -->
+                <div id="grid-nomor-soal" class="grid grid-cols-5 gap-2.5 mb-5">
+                    <!-- Diisi otomatis via JavaScript -->
+                </div>
+
+                <!-- Legenda Keterangan Warna -->
+                <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-100 space-y-2 text-xs text-slate-700">
+                    <div class="font-bold text-slate-800 mb-1">Keterangan Warna:</div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 h-4 rounded bg-blue-600 ring-2 ring-blue-300 inline-block"></span>
+                        <span>Soal sedang dibuka</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 h-4 rounded bg-emerald-500 inline-block"></span>
+                        <span>Sudah dikerjakan</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 h-4 rounded bg-amber-400 inline-block"></span>
+                        <span>Ragu-ragu</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-4 h-4 rounded bg-white border border-slate-300 inline-block"></span>
+                        <span>Belum dikerjakan</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- =====================================================================
+         MODAL KONFIRMASI SELESAI UJIAN (Pengganti confirm() bawaan browser)
+    ====================================================================== -->
+    <div id="modal-konfirmasi-selesai" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 animate-popup space-y-4">
+            <h3 class="text-lg font-bold text-slate-900">Selesaikan Uji Coba?</h3>
+            <p id="teks-konfirmasi-selesai" class="text-sm text-slate-600 leading-relaxed">
+                Apakah kamu yakin ingin mengakhiri ujian dan melihat nilai akhir?
+            </p>
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="tutupKonfirmasiSelesai()"
+                    class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-sm">
+                    Periksa Lagi
+                </button>
+                <button onclick="selesaikanUjian()"
+                    class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow">
+                    Ya, Selesai
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         HALAMAN 3: TAMPILAN AKHIR & NILAI HASIL PENGERJAAN
+    ====================================================================== -->
+    <section id="halaman-hasil" class="hidden flex-grow flex items-center justify-center p-4 sm:p-6">
+        <div class="max-w-xl w-full bg-white rounded-3xl shadow-xl border border-emerald-100 overflow-hidden animate-popup">
+            <div class="h-3 bg-gradient-to-r from-emerald-500 via-teal-400 to-blue-500"></div>
+
+            <div class="p-7 sm:p-10 text-center space-y-6">
+                <!-- Ikon Piala / Bintang -->
+                <div class="w-20 h-20 mx-auto rounded-full bg-amber-100 text-amber-500 flex items-center justify-center shadow-inner">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-11 w-11" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                </div>
+
+                <!-- Teks Ucapan Sesuai Permintaan -->
+                <div class="space-y-2">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-emerald-700">Selamat!</h2>
+                    <p class="text-base sm:text-lg text-slate-700 leading-relaxed">
+                        Anda telah menyelesaikan Uji Coba Soal Literasi Membaca Kelas 2. Nilai yang anda dapatkan adalah
+                    </p>
+                </div>
+
+                <!-- Kotak Nilai Akhir (2 Desimal) -->
+                <div class="bg-gradient-to-b from-blue-50 to-emerald-50 border-2 border-emerald-300 rounded-3xl py-6 px-4 shadow-xs">
+                    <div id="nilai-akhir-besar" class="text-5xl sm:text-6xl font-extrabold text-blue-700 tracking-tight">
+                        0.00
+                    </div>
+                    <div class="text-xs sm:text-sm text-slate-600 mt-2 font-semibold">
+                        Jumlah Jawaban Benar: <span id="jumlah-benar-teks" class="text-emerald-700 font-bold">0</span> dari 20 Soal
+                    </div>
+                </div>
+
+                <!-- Identitas Peserta di Halaman Hasil -->
+                <div class="bg-slate-50 rounded-2xl p-4 text-left text-sm border border-slate-200 space-y-1.5">
+                    <div><span class="text-slate-500">Nama Peserta:</span> <strong id="hasil-nama" class="text-slate-900">-</strong></div>
+                    <div><span class="text-slate-500">Kelas:</span> <strong id="hasil-kelas" class="text-slate-900">-</strong></div>
+                    <div><span class="text-slate-500">Tanggal:</span> <strong id="hasil-tanggal" class="text-slate-900">-</strong></div>
+                    <div><span class="text-slate-500">Sekolah:</span> <strong class="text-slate-900">UPT SD Negeri Plumpang 3</strong></div>
+                </div>
+
+                <!-- Tombol Aksi Akhir -->
+                <div class="flex flex-wrap justify-center gap-3 pt-2 no-print">
+                    <button onclick="window.print()"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-5 rounded-xl text-sm shadow transition">
+                        Cetak Hasil
+                    </button>
+                    <button onclick="location.reload()"
+                        class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2.5 px-5 rounded-xl text-sm transition">
+                        Kembali ke Halaman Awal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================================================================
+         MODAL PENGATURAN GURU (UNGGAH LOGO & SESUAIKAN BANK SOAL JSON)
+    ====================================================================== -->
+    <div id="modal-pengaturan" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-popup">
+            <div class="bg-slate-800 text-white px-6 py-4 flex items-center justify-between">
+                <h3 class="font-bold text-base sm:text-lg">Menu Pengaturan Guru (Logo & Bank Soal)</h3>
+                <button onclick="tutupModalPengaturan()" class="text-slate-300 hover:text-white text-xl font-bold">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-5 text-sm">
+                <div>
+                    <label class="block font-bold text-slate-800 mb-1.5">1. Unggah Logo UPT SD Negeri Plumpang 3:</label>
+                    <input type="file" accept="image/*" onchange="prosesUnggahLogo(event)"
+                        class="block w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    <p class="text-xs text-slate-500 mt-1">Logo otomatis tersimpan di browser dan tampil di halaman awal.</p>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-800 mb-1.5">2. Editor Data 20 Soal (Format JSON):</label>
+                    <p class="text-xs text-slate-600 mb-2">Anda dapat menyesuaikan teks stimulus, pertanyaan, pilihan jawaban, maupun kunci jawaban di bawah ini lalu klik Simpan.</p>
+                    <textarea id="editor-json-soal" rows="10"
+                        class="w-full font-mono text-xs p-3 rounded-xl border border-slate-300 focus:border-blue-500 outline-none bg-slate-50"></textarea>
+                </div>
+            </div>
+            <div class="bg-slate-100 px-6 py-3 flex justify-end gap-3">
+                <button onclick="tutupModalPengaturan()" class="px-4 py-2 rounded-xl bg-slate-300 text-slate-800 font-bold text-sm">Tutup</button>
+                <button onclick="simpanBankSoalCustom()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm">Simpan Perubahan Soal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         LOGIKA JAVASCRIPT & BANK 20 SOAL LITERASI MEMBACA KELAS 2
+    ====================================================================== -->
+    <script>
+        /**
+         * BANK 20 SOAL LITERASI MEMBACA KELAS 2 SD
+         * Aturan Stimulus: Setiap kalimat maksimal 7 kata.
+         * Tipe Soal:
+         * - 'pg'       : Pilihan Ganda 4 opsi (A, B, C, D). kunci: 0..3
+         * - 'kategori' : Tabel 3 pernyataan (Benar / Salah). kunci: [true/false, true/false, true/false]
+         */
+        let BANK_SOAL = [
+            // SOAL 1 (PG)
+            {
+                nomor: 1,
+                tipe: 'pg',
+                judulStimulus: 'Kebun Kakek',
+                stimulus: [
+                    'Kakek punya kebun di belakang rumah.',
+                    'Kebun itu ditanami sayur dan buah.',
+                    'Ada bayam, tomat, dan pohon pepaya.',
+                    'Siti rajin membantu kakek menyiram tanaman.'
+                ],
+                sumber: 'Sumber: Cerita Anak Nusantara, <a href="https://budi.kemdikbud.go.id" target="_blank">https://budi.kemdikbud.go.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Di mana letak kebun milik kakek?',
+                opsi: [
+                    'Di samping sekolah',
+                    'Di belakang rumah',
+                    'Di depan pasar',
+                    'Di pinggir sungai'
+                ],
+                kunci: 1
+            },
+            // SOAL 2 (PG)
+            {
+                nomor: 2,
+                tipe: 'pg',
+                judulStimulus: 'Kebun Kakek',
+                stimulus: [
+                    'Kakek punya kebun di belakang rumah.',
+                    'Kebun itu ditanami sayur dan buah.',
+                    'Ada bayam, tomat, dan pohon pepaya.',
+                    'Siti rajin membantu kakek menyiram tanaman.'
+                ],
+                sumber: 'Sumber: Cerita Anak Nusantara, <a href="https://budi.kemdikbud.go.id" target="_blank">https://budi.kemdikbud.go.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Siapa yang rajin membantu kakek menyiram tanaman?',
+                opsi: [
+                    'Budi',
+                    'Nenek',
+                    'Siti',
+                    'Paman'
+                ],
+                kunci: 2
+            },
+            // SOAL 3 (KATEGORI - TABEL BENAR/SALAH)
+            {
+                nomor: 3,
+                tipe: 'kategori',
+                judulStimulus: 'Kebun Kakek',
+                stimulus: [
+                    'Kakek punya kebun di belakang rumah.',
+                    'Kebun itu ditanami sayur dan buah.',
+                    'Ada bayam, tomat, dan pohon pepaya.',
+                    'Siti rajin membantu kakek menyiram tanaman.'
+                ],
+                sumber: 'Sumber: Cerita Anak Nusantara, <a href="https://budi.kemdikbud.go.id" target="_blank">https://budi.kemdikbud.go.id</a>',
+                petunjuk: 'Berilah tanda centang (✔) pada kolom Benar atau Salah sesuai isi bacaan!',
+                pertanyaan: 'Tentukan pernyataan berikut yang sesuai dengan teks Kebun Kakek!',
+                pernyataan: [
+                    'Kebun kakek ditanami sayur dan buah.',
+                    'Di kebun kakek ada pohon mangga.',
+                    'Siti membantu kakek menyiram tanaman.'
+                ],
+                kunci: [true, false, true]
+            },
+            // SOAL 4 (PG)
+            {
+                nomor: 4,
+                tipe: 'pg',
+                judulStimulus: 'Kucing Belang Beni',
+                stimulus: [
+                    'Beni memelihara seekor kucing lucu.',
+                    'Bulunya berwarna putih dan cokelat belang.',
+                    'Kucing itu bernama Si Manis.',
+                    'Setiap pagi Beni memberinya makan ikan.'
+                ],
+                sumber: 'Sumber: Majalah Bobo Junior, <a href="https://bobo.grid.id" target="_blank">https://bobo.grid.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Apa warna bulu kucing peliharaan Beni?',
+                opsi: [
+                    'Hitam dan abu-abu',
+                    'Putih dan kuning',
+                    'Putih dan cokelat belang',
+                    'Cokelat dan hitam'
+                ],
+                kunci: 2
+            },
+            // SOAL 5 (PG)
+            {
+                nomor: 5,
+                tipe: 'pg',
+                judulStimulus: 'Kucing Belang Beni',
+                stimulus: [
+                    'Beni memelihara seekor kucing lucu.',
+                    'Bulunya berwarna putih dan cokelat belang.',
+                    'Kucing itu bernama Si Manis.',
+                    'Setiap pagi Beni memberinya makan ikan.'
+                ],
+                sumber: 'Sumber: Majalah Bobo Junior, <a href="https://bobo.grid.id" target="_blank">https://bobo.grid.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Apa makanan yang diberikan Beni setiap pagi?',
+                opsi: [
+                    'Roti tawar',
+                    'Ikan',
+                    'Sayur bayam',
+                    'Buah pisang'
+                ],
+                kunci: 1
+            },
+            // SOAL 6 (KATEGORI)
+            {
+                nomor: 6,
+                tipe: 'kategori',
+                judulStimulus: 'Kucing Belang Beni',
+                stimulus: [
+                    'Beni memelihara seekor kucing lucu.',
+                    'Bulunya berwarna putih dan cokelat belang.',
+                    'Kucing itu bernama Si Manis.',
+                    'Setiap pagi Beni memberinya makan ikan.'
+                ],
+                sumber: 'Sumber: Majalah Bobo Junior, <a href="https://bobo.grid.id" target="_blank">https://bobo.grid.id</a>',
+                petunjuk: 'Berilah tanda centang (✔) pada kolom Benar atau Salah sesuai isi bacaan!',
+                pertanyaan: 'Perhatikan pernyataan tentang kucing Beni di bawah ini!',
+                pernyataan: [
+                    'Nama kucing peliharaan Beni adalah Si Manis.',
+                    'Beni memberi makan kucing pada malam hari.',
+                    'Si Manis adalah kucing yang lucu.'
+                ],
+                kunci: [true, false, true]
+            },
+            // SOAL 7 (PG)
+            {
+                nomor: 7,
+                tipe: 'pg',
+                judulStimulus: 'Mencuci Tangan',
+                stimulus: [
+                    'Tangan kotor banyak mengandung kuman penyakit.',
+                    'Cucilah tangan memakai sabun dan air.',
+                    'Gosok telapak tangan dan sela jari.',
+                    'Bilas hingga bersih lalu keringkan.'
+                ],
+                sumber: 'Sumber: Poster Sehat Kemenkes, <a href="https://ayosehat.kemkes.go.id" target="_blank">https://ayosehat.kemkes.go.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Mengapa kita harus mencuci tangan yang kotor?',
+                opsi: [
+                    'Agar tangan terasa dingin',
+                    'Karena banyak mengandung kuman penyakit',
+                    'Supaya kuku menjadi panjang',
+                    'Karena disuruh teman bermain'
+                ],
+                kunci: 1
+            },
+            // SOAL 8 (PG)
+            {
+                nomor: 8,
+                tipe: 'pg',
+                judulStimulus: 'Mencuci Tangan',
+                stimulus: [
+                    'Tangan kotor banyak mengandung kuman penyakit.',
+                    'Cucilah tangan memakai sabun dan air.',
+                    'Gosok telapak tangan dan sela jari.',
+                    'Bilas hingga bersih lalu keringkan.'
+                ],
+                sumber: 'Sumber: Poster Sehat Kemenkes, <a href="https://ayosehat.kemkes.go.id" target="_blank">https://ayosehat.kemkes.go.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Apa yang digunakan untuk mencuci tangan agar bersih?',
+                opsi: [
+                    'Sabun dan air',
+                    'Pasir dan air',
+                    'Minyak dan tisu',
+                    'Air saja tanpa sabun'
+                ],
+                kunci: 0
+            },
+            // SOAL 9 (KATEGORI)
+            {
+                nomor: 9,
+                tipe: 'kategori',
+                judulStimulus: 'Mencuci Tangan',
+                stimulus: [
+                    'Tangan kotor banyak mengandung kuman penyakit.',
+                    'Cucilah tangan memakai sabun dan air.',
+                    'Gosok telapak tangan dan sela jari.',
+                    'Bilas hingga bersih lalu keringkan.'
+                ],
+                sumber: 'Sumber: Poster Sehat Kemenkes, <a href="https://ayosehat.kemdikbud.go.id" target="_blank">https://ayosehat.kemkes.go.id</a>',
+                petunjuk: 'Berilah tanda centang (✔) pada kolom Benar atau Salah sesuai isi bacaan!',
+                pertanyaan: 'Tentukan kebenaran langkah mencuci tangan berikut!',
+                pernyataan: [
+                    'Kita harus menggosok telapak tangan dan sela jari.',
+                    'Setelah dibilas, tangan dibiarkan tetap basah.',
+                    'Mencuci tangan memakai sabun membunuh kuman.'
+                ],
+                kunci: [true, false, true]
+            },
+            // SOAL 10 (PG)
+            {
+                nomor: 10,
+                tipe: 'pg',
+                judulStimulus: 'Pergi ke Perpustakaan',
+                stimulus: [
+                    'Hari Selasa kelas dua berkunjung ke perpustakaan.',
+                    'Banyak buku cerita tersusun rapi di rak.',
+                    'Lani memilih buku tentang hewan laut.',
+                    'Semua siswa membaca dengan tenang.'
+                ],
+                sumber: 'Sumber: Buku Siswa Bahasa Indonesia Kelas 2, <a href="https://buku.kemdikbud.go.id" target="_blank">https://buku.kemdikbud.go.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Kapan siswa kelas dua berkunjung ke perpustakaan?',
+                opsi: [
+                    'Hari Senin',
+                    'Hari Selasa',
+                    'Hari Rabu',
+                    'Hari Jumat'
+                ],
+                kunci: 1
+            },
+            // SOAL 11 (PG)
+            {
+                nomor: 11,
+                tipe: 'pg',
+                judulStimulus: 'Pergi ke Perpustakaan',
+                stimulus: [
+                    'Hari Selasa kelas dua berkunjung ke perpustakaan.',
+                    'Banyak buku cerita tersusun rapi di rak.',
+                    'Lani memilih buku tentang hewan laut.',
+                    'Semua siswa membaca dengan tenang.'
+                ],
+                sumber: 'Sumber: Buku Siswa Bahasa Indonesia Kelas 2, <a href="https://buku.kemdikbud.go.id" target="_blank">https://buku.kemdikbud.go.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Buku apa yang dipilih oleh Lani?',
+                opsi: [
+                    'Buku tentang tanaman bunga',
+                    'Buku tentang alat transportasi',
+                    'Buku tentang hewan laut',
+                    'Buku tentang luar angkasa'
+                ],
+                kunci: 2
+            },
+            // SOAL 12 (KATEGORI)
+            {
+                nomor: 12,
+                tipe: 'kategori',
+                judulStimulus: 'Pergi ke Perpustakaan',
+                stimulus: [
+                    'Hari Selasa kelas dua berkunjung ke perpustakaan.',
+                    'Banyak buku cerita tersusun rapi di rak.',
+                    'Lani memilih buku tentang hewan laut.',
+                    'Semua siswa membaca dengan tenang.'
+                ],
+                sumber: 'Sumber: Buku Siswa Bahasa Indonesia Kelas 2, <a href="https://buku.kemdikbud.go.id" target="_blank">https://buku.kemdikbud.go.id</a>',
+                petunjuk: 'Berilah tanda centang (✔) pada kolom Benar atau Salah sesuai isi bacaan!',
+                pertanyaan: 'Tentukan pernyataan yang sesuai dengan suasana di perpustakaan!',
+                pernyataan: [
+                    'Buku cerita tersusun rapi di rak.',
+                    'Siswa-siswa mengobrol dengan suara keras.',
+                    'Semua siswa membaca buku dengan tenang.'
+                ],
+                kunci: [true, false, true]
+            },
+            // SOAL 13 (PG)
+            {
+                nomor: 13,
+                tipe: 'pg',
+                judulStimulus: 'Sepeda Baru Edo',
+                stimulus: [
+                    'Edo mendapat hadiah sepeda dari ayah.',
+                    'Sepeda Edo berwarna merah menyala.',
+                    'Edo berlatih naik sepeda di lapangan.',
+                    'Ia memakai helm agar kepala aman.'
+                ],
+                sumber: 'Sumber: Cerita Anak Ceria, <a href="https://literasidasar.kemdikbud.go.id" target="_blank">https://literasidasar.kemdikbud.go.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Dari siapa Edo mendapat hadiah sepeda?',
+                opsi: [
+                    'Dari kakek',
+                    'Dari paman',
+                    'Dari ayah',
+                    'Dari kakak'
+                ],
+                kunci: 2
+            },
+            // SOAL 14 (PG)
+            {
+                nomor: 14,
+                tipe: 'pg',
+                judulStimulus: 'Sepeda Baru Edo',
+                stimulus: [
+                    'Edo mendapat hadiah sepeda dari ayah.',
+                    'Sepeda Edo berwarna merah menyala.',
+                    'Edo berlatih naik sepeda di lapangan.',
+                    'Ia memakai helm agar kepala aman.'
+                ],
+                sumber: 'Sumber: Cerita Anak Ceria, <a href="https://literasidasar.kemdikbud.go.id" target="_blank">https://literasidasar.kemdikbud.go.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Mengapa Edo memakai helm saat berlatih sepeda?',
+                opsi: [
+                    'Agar terlihat tampan',
+                    'Agar kepala tetap aman',
+                    'Agar sepeda melaju kencang',
+                    'Agar tidak kepanasan'
+                ],
+                kunci: 1
+            },
+            // SOAL 15 (KATEGORI)
+            {
+                nomor: 15,
+                tipe: 'kategori',
+                judulStimulus: 'Sepeda Baru Edo',
+                stimulus: [
+                    'Edo mendapat hadiah sepeda dari ayah.',
+                    'Sepeda Edo berwarna merah menyala.',
+                    'Edo berlatih naik sepeda di lapangan.',
+                    'Ia memakai helm agar kepala aman.'
+                ],
+                sumber: 'Sumber: Cerita Anak Ceria, <a href="https://literasidasar.kemdikbud.go.id" target="_blank">https://literasidasar.kemdikbud.go.id</a>',
+                petunjuk: 'Berilah tanda centang (✔) pada kolom Benar atau Salah sesuai isi bacaan!',
+                pertanyaan: 'Perhatikan pernyataan mengenai sepeda Edo berikut ini!',
+                pernyataan: [
+                    'Sepeda baru Edo berwarna biru tua.',
+                    'Edo berlatih naik sepeda di lapangan.',
+                    'Helm dipakai untuk melindungi kepala.'
+                ],
+                kunci: [false, true, true]
+            },
+            // SOAL 16 (PG)
+            {
+                nomor: 16,
+                tipe: 'pg',
+                judulStimulus: 'Menabung di Celengan',
+                stimulus: [
+                    'Rina menyisihkan sebagian uang jajannya.',
+                    'Uang itu dimasukkan ke celengan ayam.',
+                    'Rina ingin membeli tas sekolah baru.',
+                    'Menabung melatih kita hidup hemat.'
+                ],
+                sumber: 'Sumber: Dongeng Edukasi Anak, <a href="https://sikapiuangmu.ojk.go.id" target="_blank">https://sikapiuangmu.ojk.go.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Berbentuk apakah celengan milik Rina?',
+                opsi: [
+                    'Berbentuk kucing',
+                    'Berbentuk ayam',
+                    'Berbentuk kelinci',
+                    'Berbentuk rumah'
+                ],
+                kunci: 1
+            },
+            // SOAL 17 (PG)
+            {
+                nomor: 17,
+                tipe: 'pg',
+                judulStimulus: 'Menabung di Celengan',
+                stimulus: [
+                    'Rina menyisihkan sebagian uang jajannya.',
+                    'Uang itu dimasukkan ke celengan ayam.',
+                    'Rina ingin membeli tas sekolah baru.',
+                    'Menabung melatih kita hidup hemat.'
+                ],
+                sumber: 'Sumber: Dongeng Edukasi Anak, <a href="https://sikapiuangmu.ojk.go.id" target="_blank">https://sikapiuangmu.ojk.go.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Apa yang ingin dibeli Rina dari hasil menabung?',
+                opsi: [
+                    'Sepatu olahraga',
+                    'Buku gambar',
+                    'Tas sekolah baru',
+                    'Kotak pensil'
+                ],
+                kunci: 2
+            },
+            // SOAL 18 (PG)
+            {
+                nomor: 18,
+                tipe: 'pg',
+                judulStimulus: 'Kerja Bakti di Kelas',
+                stimulus: [
+                    'Pagi ini siswa kelas dua kerja bakti.',
+                    'Dayu menyapu lantai kelas sampai bersih.',
+                    'Udin membersihkan papan tulis dengan penghapus.',
+                    'Kelas bersih membuat belajar menjadi nyaman.'
+                ],
+                sumber: 'Sumber: Modul Literasi SD, <a href="https://ditpsd.kemdikbud.go.id" target="_blank">https://ditpsd.kemdikbud.go.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Apa tugas Dayu saat kerja bakti di kelas?',
+                opsi: [
+                    'Menghapus papan tulis',
+                    'Menyiram bunga di taman',
+                    'Menyapu lantai kelas',
+                    'Merapikan meja guru'
+                ],
+                kunci: 2
+            },
+            // SOAL 19 (PG)
+            {
+                nomor: 19,
+                tipe: 'pg',
+                judulStimulus: 'Kerja Bakti di Kelas',
+                stimulus: [
+                    'Pagi ini siswa kelas dua kerja bakti.',
+                    'Dayu menyapu lantai kelas sampai bersih.',
+                    'Udin membersihkan papan tulis dengan penghapus.',
+                    'Kelas bersih membuat belajar menjadi nyaman.'
+                ],
+                sumber: 'Sumber: Modul Literasi SD, <a href="https://ditpsd.kemdikbud.go.id" target="_blank">https://ditpsd.kemdikbud.go.id</a>',
+                petunjuk: 'Pilihlah satu jawaban yang paling benar!',
+                pertanyaan: 'Bagaimana rasanya belajar di kelas yang bersih?',
+                opsi: [
+                    'Menjadi mengantuk',
+                    'Menjadi nyaman',
+                    'Menjadi gelisah',
+                    'Menjadi bosan'
+                ],
+                kunci: 1
+            },
+            // SOAL 20 (KATEGORI)
+            {
+                nomor: 20,
+                tipe: 'kategori',
+                judulStimulus: 'Kerja Bakti di Kelas',
+                stimulus: [
+                    'Pagi ini siswa kelas dua kerja bakti.',
+                    'Dayu menyapu lantai kelas sampai bersih.',
+                    'Udin membersihkan papan tulis dengan penghapus.',
+                    'Kelas bersih membuat belajar menjadi nyaman.'
+                ],
+                sumber: 'Sumber: Modul Literasi SD, <a href="https://ditpsd.kemdikbud.go.id" target="_blank">https://ditpsd.kemdikbud.go.id</a>',
+                petunjuk: 'Berilah tanda centang (✔) pada kolom Benar atau Salah sesuai isi bacaan!',
+                pertanyaan: 'Tentukan pernyataan yang sesuai dengan bacaan Kerja Bakti di Kelas!',
+                pernyataan: [
+                    'Udin membersihkan papan tulis dengan penghapus.',
+                    'Kerja bakti dilakukan pada sore hari.',
+                    'Kelas yang bersih membuat belajar nyaman.'
+                ],
+                kunci: [true, false, true]
+            }
+        ];
+
+        // =====================================================================
+        // STATE APLIKASI
+        // =====================================================================
+        const TOKEN_BENAR = 'LITERASI1';
+        let dataPeserta = { nama: '', kelas: '', tanggal: '' };
+        let indeksSoalAktif = 0; // 0 s.d. 19
+        let jawabanSiswa = new Array(20).fill(null); // Untuk PG: 0..3; Untuk Kategori: [bool/null, bool/null, bool/null]
+        let statusRagu = new Array(20).fill(false);
+        let sisaDetik = 30 * 60; // 30 menit = 1800 detik
+        let intervalTimer = null;
+        let ujianSelesai = false;
+
+        // =====================================================================
+        // INISIALISASI SAAT HALAMAN DIMUAT
+        // =====================================================================
+        window.onload = function () {
+            // Set default tanggal hari ini
+            const hariIni = new Date().toISOString().split('T')[0];
+            document.getElementById('input-tanggal').value = hariIni;
+
+            // Cek apakah ada logo tersimpan di localStorage
+            const logoTersimpan = localStorage.getItem('logo_sdn_plumpang3');
+            if (logoTersimpan) {
+                tampilkanGambarLogo(logoTersimpan);
+            }
+
+            // Cek apakah ada bank soal custom di localStorage
+            const soalTersimpan = localStorage.getItem('bank_soal_literasi_kls2');
+            if (soalTersimpan) {
+                try {
+                    const parsed = JSON.parse(soalTersimpan);
+                    if (Array.isArray(parsed) && parsed.length === 20) {
+                        BANK_SOAL = parsed;
+                    }
+                } catch (e) {
+                    console.warn('Gagal memuat bank soal tersimpan, menggunakan default.');
+                }
+            }
+        };
+
+        // =====================================================================
+        // FUNGSI UNGGAH & TAMPILKAN LOGO SEKOLAH
+        // =====================================================================
+        function prosesUnggahLogo(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const dataUrl = e.target.result;
+                tampilkanGambarLogo(dataUrl);
+                try {
+                    localStorage.setItem('logo_sdn_plumpang3', dataUrl);
+                } catch (err) {
+                    console.warn('Ukuran gambar terlalu besar untuk penyimpanan lokal.');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function tampilkanGambarLogo(src) {
+            const img = document.getElementById('logo-sekolah-img');
+            const svg = document.getElementById('logo-placeholder-svg');
+            img.src = src;
+            img.classList.remove('hidden');
+            svg.classList.add('hidden');
+
+            // Update juga logo mini di header halaman ujian
+            const headerMini = document.getElementById('header-logo-mini');
+            headerMini.innerHTML = `<img src="${src}" alt="Logo" class="w-full h-full object-contain">`;
+        }
+
+        // =====================================================================
+        // PENGATURAN GURU (EDIT BANK SOAL)
+        // =====================================================================
+        function bukaModalPengaturan() {
+            document.getElementById('editor-json-soal').value = JSON.stringify(BANK_SOAL, null, 2);
+            document.getElementById('modal-pengaturan').classList.remove('hidden');
+        }
+
+        function tutupModalPengaturan() {
+            document.getElementById('modal-pengaturan').classList.add('hidden');
+        }
+
+        function simpanBankSoalCustom() {
+            try {
+                const teks = document.getElementById('editor-json-soal').value;
+                const parsed = JSON.parse(teks);
+                if (!Array.isArray(parsed) || parsed.length !== 20) {
+                    tampilkanPesanSingkat('Format salah: Jumlah soal harus tepat 20 butir.');
+                    return;
+                }
+                BANK_SOAL = parsed;
+                localStorage.setItem('bank_soal_literasi_kls2', JSON.stringify(BANK_SOAL));
+                tutupModalPengaturan();
+                tampilkanPesanSingkat('Bank soal berhasil diperbarui!');
+            } catch (err) {
+                tampilkanPesanSingkat('Format JSON tidak valid. Periksa kembali tanda koma atau tanda kutip.');
+            }
+        }
+
+        function tampilkanPesanSingkat(pesan) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-semibold z-50 animate-popup';
+            toast.textContent = pesan;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3200);
+        }
+
+        // =====================================================================
+        // VALIDASI LOGIN & POP-UP PETUNJUK
+        // =====================================================================
+        function formatTanggalIndonesia(tglIso) {
+            if (!tglIso) return '-';
+            const bulan = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+            const parts = tglIso.split('-');
+            if (parts.length !== 3) return tglIso;
+            return `${parseInt(parts[2], 10)} ${bulan[parseInt(parts[1], 10) - 1]} ${parts[0]}`;
+        }
+
+        function validasiLogin(event) {
+            event.preventDefault();
+            const nama = document.getElementById('input-nama').value.trim();
+            const kelas = document.getElementById('input-kelas').value.trim();
+            const tanggal = document.getElementById('input-tanggal').value;
+            const token = document.getElementById('input-token').value.trim();
+            const boxError = document.getElementById('pesan-error-token');
+
+            if (token !== TOKEN_BENAR) {
+                boxError.classList.remove('hidden');
+                document.getElementById('input-token').focus();
+                return;
+            }
+
+            // Token benar
+            boxError.classList.add('hidden');
+            dataPeserta = {
+                nama: nama,
+                kelas: kelas,
+                tanggal: formatTanggalIndonesia(tanggal)
+            };
+
+            // Tampilkan Pop-Up Identitas & Petunjuk
+            document.getElementById('tampil-popup-nama').textContent = ': ' + dataPeserta.nama;
+            document.getElementById('tampil-popup-kelas').textContent = ': ' + dataPeserta.kelas;
+            document.getElementById('tampil-popup-tanggal').textContent = ': ' + dataPeserta.tanggal;
+            document.getElementById('modal-petunjuk').classList.remove('hidden');
+        }
+
+        // =====================================================================
+        // MULAI UJIAN & TIMER 30 MENIT
+        // =====================================================================
+        function mulaiUjian() {
+            document.getElementById('modal-petunjuk').classList.add('hidden');
+            document.getElementById('halaman-awal').classList.add('hidden');
+            document.getElementById('halaman-ujian').classList.remove('hidden');
+
+            // Isi header identitas siswa
+            document.getElementById('header-nama-siswa').textContent = dataPeserta.nama;
+            document.getElementById('header-kelas-siswa').textContent = dataPeserta.kelas;
+
+            // Inisialisasi struktur jawaban kategori (array 3 elemen null)
+            jawabanSiswa = BANK_SOAL.map(s => s.tipe === 'kategori' ? [null, null, null] : null);
+
+            renderMenuNomor();
+            tampilkanSoal(0);
+            mulaiTimer();
+        }
+
+        function mulaiTimer() {
+            updateTampilanTimer();
+            intervalTimer = setInterval(() => {
+                sisaDetik--;
+                updateTampilanTimer();
+
+                if (sisaDetik <= 300) {
+                    // Peringatan warna merah jika waktu <= 5 menit
+                    const kotak = document.getElementById('kotak-timer');
+                    kotak.classList.remove('bg-blue-50', 'border-blue-200', 'text-blue-900');
+                    kotak.classList.add('bg-red-50', 'border-red-300', 'text-red-700');
+                }
+
+                if (sisaDetik <= 0) {
+                    clearInterval(intervalTimer);
+                    selesaikanUjian();
+                }
+            }, 1000);
+        }
+
+        function updateTampilanTimer() {
+            const menit = Math.floor(Math.max(0, sisaDetik) / 60);
+            const detik = Math.max(0, sisaDetik) % 60;
+            const formatWaktu = `${String(menit).padStart(2, '0')}:${String(detik).padStart(2, '0')}`;
+            document.getElementById('tampilan-timer').textContent = formatWaktu;
+        }
+
+        // =====================================================================
+        // CEK STATUS SUDAH DIJAWAB & RENDER MENU NOMOR 1-20
+        // =====================================================================
+        function apakahSoalSudahDijawab(index) {
+            const soal = BANK_SOAL[index];
+            const jwb = jawabanSiswa[index];
+            if (soal.tipe === 'pg') {
+                return jwb !== null && jwb !== undefined;
+            } else if (soal.tipe === 'kategori') {
+                // Dianggap sudah dikerjakan jika ketiga pernyataan Benar/Salah sudah dicentang
+                return Array.isArray(jwb) && jwb.every(item => item === true || item === false);
+            }
+            return false;
+        }
+
+        function renderMenuNomor() {
+            const grid = document.getElementById('grid-nomor-soal');
+            grid.innerHTML = '';
+            let totalTerjawab = 0;
+
+            for (let i = 0; i < BANK_SOAL.length; i++) {
+                const sudahJawab = apakahSoalSudahDijawab(i);
+                if (sudahJawab) totalTerjawab++;
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = i + 1;
+                btn.onclick = () => tampilkanSoal(i);
+
+                // Penentuan warna menu nomor soal sesuai status
+                let kelasWarna = 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'; // Belum dikerjakan
+
+                if (i === indeksSoalAktif) {
+                    // Halaman soal yang sedang dibuka
+                    kelasWarna = 'bg-blue-600 text-white border-blue-700 ring-2 ring-blue-300 scale-105';
+                } else if (statusRagu[i]) {
+                    // Ragu-ragu
+                    kelasWarna = 'bg-amber-400 text-slate-900 border-amber-500';
+                } else if (sudahJawab) {
+                    // Sudah dikerjakan -> Hijau
+                    kelasWarna = 'bg-emerald-500 text-white border-emerald-600';
+                }
+
+                btn.className = `h-10 rounded-xl border font-bold text-sm transition flex items-center justify-center shadow-2xs ${kelasWarna}`;
+                grid.appendChild(btn);
+            }
+
+            document.getElementById('ringkasan-terjawab').textContent = `${totalTerjawab} / 20 Terjawab`;
+        }
+
+        // =====================================================================
+        // TAMPILKAN SOAL KE LAYAR
+        // =====================================================================
+        function tampilkanSoal(index) {
+            indeksSoalAktif = index;
+            const soal = BANK_SOAL[index];
+
+            // Header nomor & tipe
+            document.getElementById('nomor-soal-aktif').textContent = soal.nomor;
+            document.getElementById('badge-tipe-soal').textContent =
+                soal.tipe === 'pg' ? 'Pilihan Ganda' : 'Pilihan Ganda Kompleks (Benar / Salah)';
+
+            // Stimulus
+            document.getElementById('judul-stimulus').textContent = soal.judulStimulus || '';
+            const isiStimulusEl = document.getElementById('isi-stimulus');
+            isiStimulusEl.innerHTML = '';
+            soal.stimulus.forEach(kalimat => {
+                const p = document.createElement('p');
+                p.textContent = kalimat;
+                isiStimulusEl.appendChild(p);
+            });
+
+            // Sumber stimulus (Arial 8pt miring, link biru)
+            document.getElementById('sumber-stimulus').innerHTML = soal.sumber || '';
+
+            // Petunjuk & Pokok Soal (Arial 11pt)
+            document.getElementById('petunjuk-soal').textContent = soal.petunjuk || '';
+            document.getElementById('pokok-soal').textContent = soal.pertanyaan || '';
+
+            // Area Jawaban
+            const areaJawaban = document.getElementById('area-jawaban');
+            areaJawaban.innerHTML = '';
+
+            if (soal.tipe === 'pg') {
+                renderOpsiPilihanGanda(soal, index, areaJawaban);
+            } else if (soal.tipe === 'kategori') {
+                renderTabelKategori(soal, index, areaJawaban);
+            }
+
+            // Sinkronisasi checkbox Ragu-ragu
+            document.getElementById('cek-ragu').checked = statusRagu[index];
+
+            // Tampilkan tombol "Selesai" di pojok kanan bawah HANYA pada soal terakhir (index 19 / soal 20)
+            const wadahSelesai = document.getElementById('wadah-tombol-selesai');
+            if (index === BANK_SOAL.length - 1) {
+                wadahSelesai.classList.remove('hidden');
+            } else {
+                wadahSelesai.classList.add('hidden');
+            }
+
+            renderMenuNomor();
+        }
+
+        // Render Opsi Pilihan Ganda dengan Lingkaran Berisi Huruf A, B, C, D
+        function renderOpsiPilihanGanda(soal, indexSoal, container) {
+            const huruf = ['A', 'B', 'C', 'D'];
+            const wrapper = document.createElement('div');
+            wrapper.className = 'space-y-3';
+
+            soal.opsi.forEach((teksOpsi, idxOpsi) => {
+                const terpilih = jawabanSiswa[indexSoal] === idxOpsi;
+                const item = document.createElement('div');
+                item.className = `opsi-item flex items-center gap-3.5 p-3.5 rounded-2xl border-2 ${
+                    terpilih ? 'terpilih' : 'border-slate-200 bg-white'
+                }`;
+
+                item.onclick = () => {
+                    jawabanSiswa[indexSoal] = idxOpsi;
+                    tampilkanSoal(indexSoal);
+                };
+
+                item.innerHTML = `
+                    <span class="lingkaran-huruf">${huruf[idxOpsi]}</span>
+                    <span class="soal-teks-arial11 flex-1">${teksOpsi}</span>
+                `;
+                wrapper.appendChild(item);
+            });
+
+            container.appendChild(wrapper);
+        }
+
+        // Render Tabel Kategori 3 Kolom: Pernyataan, Benar, Salah
+        function renderTabelKategori(soal, indexSoal, container) {
+            const jwbSaatIni = jawabanSiswa[indexSoal] || [null, null, null];
+
+            const tableWrapper = document.createElement('div');
+            tableWrapper.className = 'overflow-x-auto rounded-2xl border border-slate-300';
+
+            const table = document.createElement('table');
+            table.className = 'tabel-kategori';
+
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th class="text-left">Pernyataan</th>
+                        <th class="text-center w-24">Benar</th>
+                        <th class="text-center w-24">Salah</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            `;
+
+            const tbody = table.querySelector('tbody');
+
+            soal.pernyataan.forEach((teksPernyataan, idxBaris) => {
+                const nilaiBaris = jwbSaatIni[idxBaris]; // true, false, atau null
+                const tr = document.createElement('tr');
+                tr.className = idxBaris % 2 === 0 ? 'bg-white' : 'bg-slate-50/70';
+
+                // Kolom 1: Pernyataan (Arial 11pt)
+                const tdPernyataan = document.createElement('td');
+                tdPernyataan.className = 'soal-teks-arial11';
+                tdPernyataan.textContent = teksPernyataan;
+
+                // Kolom 2: Benar
+                const tdBenar = document.createElement('td');
+                tdBenar.className = `sel-centang ${nilaiBaris === true ? 'aktif-benar' : ''}`;
+                tdBenar.innerHTML = `<span class="kotak-centang">${nilaiBaris === true ? '✔' : ''}</span>`;
+                tdBenar.onclick = () => {
+                    jawabanSiswa[indexSoal][idxBaris] = true;
+                    tampilkanSoal(indexSoal);
+                };
+
+                // Kolom 3: Salah
+                const tdSalah = document.createElement('td');
+                tdSalah.className = `sel-centang ${nilaiBaris === false ? 'aktif-salah' : ''}`;
+                tdSalah.innerHTML = `<span class="kotak-centang">${nilaiBaris === false ? '✔' : ''}</span>`;
+                tdSalah.onclick = () => {
+                    jawabanSiswa[indexSoal][idxBaris] = false;
+                    tampilkanSoal(indexSoal);
+                };
+
+                tr.appendChild(tdPernyataan);
+                tr.appendChild(tdBenar);
+                tr.appendChild(tdSalah);
+                tbody.appendChild(tr);
+            });
+
+            tableWrapper.appendChild(table);
+            container.appendChild(tableWrapper);
+        }
+
+        // =====================================================================
+        // TOMBOL LEWATI, RAGU-RAGU, DAN SELESAI
+        // =====================================================================
+        function lewatiSoal() {
+            if (indeksSoalAktif < BANK_SOAL.length - 1) {
+                tampilkanSoal(indeksSoalAktif + 1);
+            } else {
+                // Jika sudah di nomor 20, kembali ke soal pertama yang belum dijawab atau nomor 1
+                const belumDijawab = BANK_SOAL.findIndex((_, idx) => !apakahSoalSudahDijawab(idx));
+                tampilkanSoal(belumDijawab !== -1 ? belumDijawab : 0);
+            }
+        }
+
+        function toggleRaguRagu() {
+            statusRagu[indeksSoalAktif] = !statusRagu[indeksSoalAktif];
+            document.getElementById('cek-ragu').checked = statusRagu[indeksSoalAktif];
+            renderMenuNomor();
+        }
+
+        function konfirmasiSelesai() {
+            const belum = BANK_SOAL.filter((_, idx) => !apakahSoalSudahDijawab(idx)).length;
+            const teks = document.getElementById('teks-konfirmasi-selesai');
+            if (belum > 0) {
+                teks.innerHTML = `Masih ada <strong>${belum} soal</strong> yang belum lengkap dijawab. Apakah kamu yakin ingin menyelesaikan ujian sekarang?`;
+            } else {
+                teks.textContent = 'Semua soal sudah dikerjakan. Apakah kamu yakin ingin mengakhiri uji coba dan melihat nilai?';
+            }
+            document.getElementById('modal-konfirmasi-selesai').classList.remove('hidden');
+        }
+
+        function tutupKonfirmasiSelesai() {
+            document.getElementById('modal-konfirmasi-selesai').classList.add('hidden');
+        }
+
+        // =====================================================================
+        // PERHITUNGAN NILAI & TAMPILAN AKHIR
+        // =====================================================================
+        function selesaikanUjian() {
+            if (ujianSelesai) return;
+            ujianSelesai = true;
+            clearInterval(intervalTimer);
+            tutupKonfirmasiSelesai();
+
+            let jumlahBenar = 0;
+
+            BANK_SOAL.forEach((soal, idx) => {
+                const jwb = jawabanSiswa[idx];
+                if (soal.tipe === 'pg') {
+                    if (jwb === soal.kunci) {
+                        jumlahBenar += 1;
+                    }
+                } else if (soal.tipe === 'kategori') {
+                    // Aturan: 3 pernyataan harus benar semua; jika salah 1 saja maka tidak dapat nilai
+                    if (
+                        Array.isArray(jwb) &&
+                        jwb.length === 3 &&
+                        jwb[0] === soal.kunci[0] &&
+                        jwb[1] === soal.kunci[1] &&
+                        jwb[2] === soal.kunci[2]
+                    ) {
+                        jumlahBenar += 1;
+                    }
+                }
+            });
+
+            // Rumus: (Jumlah Jawaban Benar * 100) / 20 dengan 2 desimal
+            const nilaiAkhir = ((jumlahBenar * 100) / 20).toFixed(2);
+
+            // Pindah ke halaman hasil
+            document.getElementById('halaman-ujian').classList.add('hidden');
+            document.getElementById('halaman-hasil').classList.remove('hidden');
+
+            document.getElementById('nilai-akhir-besar').textContent = nilaiAkhir;
+            document.getElementById('jumlah-benar-teks').textContent = jumlahBenar;
+            document.getElementById('hasil-nama').textContent = dataPeserta.nama;
+            document.getElementById('hasil-kelas').textContent = dataPeserta.kelas;
+            document.getElementById('hasil-tanggal').textContent = dataPeserta.tanggal;
+        }
+    </script>
+</body>
+</html>
